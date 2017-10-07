@@ -1,0 +1,8 @@
+1. 观察者和主题均通过interface的形式定义需要遵循的公用接口。这种方式其实与设计模式无关，而是一种方便的定义协议的方式。以后在设计和实现中可以广泛采用接口的模式对协议进行定义。
+2. 主题通过实现registerObserver, removerObserver两个接口对observers进行管理，通过notifiyObserver的接口对observers进行通知。在具体实现中，往往将具体主题的change与notifiyObserver进行关联。
+3. 观察者通过update函数从主题获取信息推送。
+4. 主题可以通过提示数据发生变化的方式，让observe根据需要来获取，而不是把内部实现通知给observer。如此一来，并不需要在notifyObserver中将所有信息都定义在统一的接口中。相反，可以让众多Observer根据需要来主动获取。
+5. JDK内置了Observable、Observer的父类。主题需要继承Observable, 观察者需要实现Observer的接口。主题在做过数据更新后，执行setChanged和notifyObservers。观察者只需要实现update函数，就能获取主题的引用，通过public方法获取所需要的数据。
+6. 通过JDK的Observable、Observer的实现的好处在于，主题和观察者只需要做很少的事情，不需要动态注册和解注册Observer。观察者直接获取主题变动中需要的事件，不需要把所有的数据获取均通过统一的接口。
+7. JDK内部实现的Observable的问题在于，这是一个类，而不是一个接口。而java不支持多种继承。如果某个派生子类需要继承一个父类的实现，就不能通过继承Observable的形式进行。
+8. 除此之外，如果通过使用JDK中的Observable的形式实现观察者模式，就无法自己定义changed条件的判断。
